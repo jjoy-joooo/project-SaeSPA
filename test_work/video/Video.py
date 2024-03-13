@@ -7,6 +7,9 @@ import soundfile as sf
 import openai
 from dotenv import load_dotenv
 
+
+##영상->음성 파일 변환
+
 class AudioProcessor:
     def __init__(self):
         self.openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -29,6 +32,8 @@ class AudioProcessor:
         ]
         subprocess.run(command)
 
+
+### 노이즈 제거
     def reduce_noise(self, input_file_path, output_file_path):
         input_file_path = os.path.join(self.current_dir, input_file_path)
         output_file_path = os.path.join(self.current_dir, output_file_path)
@@ -36,6 +41,8 @@ class AudioProcessor:
         audio, rate = librosa.load(input_file_path, sr=None)
         reduced_noise_audio = nr.reduce_noise(y=audio, sr=rate)
         sf.write(output_file_path, reduced_noise_audio, rate)
+
+##음성 텍스트화
 
     def recognize_audio(self, audio_file_path, language="ko-KR"):
         audio_file_path = os.path.join(self.current_dir, audio_file_path)
@@ -51,6 +58,8 @@ class AudioProcessor:
         except sr.RequestError as e:
             print(f"Google Web Speech API 요청 에러: {e}")
             return None
+        
+##요약
 
     def summarize_text(self, user_text, lang="en"):
         openai.api_key = self.openai_api_key
@@ -71,12 +80,14 @@ class AudioProcessor:
         summary = response["choices"][0]["message"]["content"]
         return summary
     
+##테스트코드
+    
 
-    # 인스턴스 생성
+# 인스턴스 생성
 processor = AudioProcessor()
 
 # 비디오에서 오디오 추출
-processor.extract_audio("C:\\Users\\user\\Desktop\\Module\\project-SaeSPA\\test_work\\video\\1min.mp4", "output_audio.wav")
+processor.extract_audio("C:\\Users\\user\\Desktop\\Module\\project-SaeSPA\\test_work\\video\\PRODUCE 101.mp4", "output_audio.wav")
 
 
 # 오디오에서 소음 감소
