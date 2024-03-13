@@ -1,5 +1,10 @@
 import openai
 import speech_recognition as sr
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 class AudioTextConverter:
     def recognize_audio(self, audio_file_path):
@@ -46,11 +51,17 @@ class TextSummarizer:
         summary = response["choices"][0]["message"]["content"]
         return summary
 
-# 음성 파일 경로
-audio_file_path = "./baseball_lecture_1min.wav"
+# 현재 작업 디렉토리를 얻어옴
+current_directory = os.getcwd()
+
+# 음성 파일 이름
+audio_filename = "baseball_lecture_1min.wav"
+
+# 음성 파일 경로 (상대경로)
+audio_file_path = os.path.join(current_directory, audio_filename)
 
 # API 키 설정
-api_key = "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"
+api_key = os.environ.get('api_key')
 
 # 클래스 인스턴스 생성
 summarizer = TextSummarizer(api_key)
