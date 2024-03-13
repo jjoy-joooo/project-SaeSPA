@@ -50,7 +50,7 @@ class TextSummarizer:
 audio_file_path = "./baseball_lecture_1min.wav"
 
 # API 키 설정
-api_key = "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"
+api_key = "your_api_key"
 
 # 클래스 인스턴스 생성
 summarizer = TextSummarizer(api_key)
