@@ -1,31 +1,67 @@
 from flask import Blueprint, request, jsonify
 
-from utilities import convert_not_true_to_false
+from app.utilities.common_parameters import (
+    get_boolean_summary_param,
+    validate_file_upload,
+)
 
-text_extraction = Blueprint('text_extraction', __name__)
+from app.services import (
+    pdf_service
+    # perform_extract_text_from_pdf
+)
 
-REQUEST_PARAMETER_NAME = 'summary'
+text_extraction_blueprint = Blueprint("text_extraction", __name__)
 
-@text_extraction.route('/image', methods=['POST'])
+
+@text_extraction_blueprint.route("/image", methods=["GET"])
+def process_image_get():
+    summary_param = get_boolean_summary_param()
+
+    return jsonify(
+        {
+            "message": "Image processed successfully: ",
+            "summary": summary_param,
+        }
+    )
+
+
+
+@text_extraction_blueprint.route("/image", methods=["POST"])
 def process_image():
-    result = convert_not_true_to_false(request.args.get(REQUEST_PARAMETER_NAME, default=False))
-    
-    return jsonify({"message": "Image processed successfully"})
+    summary_param = get_boolean_summary_param()
+    file, message, statusCode = validate_file_upload()
+    text = pdf_service(file).perform_extract_text_from_pdf()
 
-@text_extraction.route('/pdf', methods=['POST'])
+    print('------------------------------------ ')
+    print('Test >>> ', text)
+
+    return jsonify(
+        {
+            "summary": summary_param,
+            "file": file.filename,
+            "message": message,
+            "statusCode": statusCode,
+            "text": text
+        }
+    )
+
+
+@text_extraction_blueprint.route("/pdf", methods=["POST"])
 def process_pdf():
-    result = convert_not_true_to_false(request.args.get(REQUEST_PARAMETER_NAME, default=False))
-        
+    summary_param = get_boolean_summary_param()
+
     return jsonify({"message": "Pdf processed successfully"})
 
-@text_extraction.route('/auio', methods=['POST'])
+
+@text_extraction_blueprint.route("/auio", methods=["POST"])
 def process_audio():
-    result = convert_not_true_to_false(request.args.get(REQUEST_PARAMETER_NAME, default=False))
-        
+    summary_param = get_boolean_summary_param()
+
     return jsonify({"message": "Auio processed successfully"})
 
-@text_extraction.route('/video', methods=['POST'])
+
+@text_extraction_blueprint.route("/video", methods=["POST"])
 def process_video():
-    result = convert_not_true_to_false(request.args.get(REQUEST_PARAMETER_NAME, default=False))
-        
+    summary_param = get_boolean_summary_param()
+
     return jsonify({"message": "Video processed successfully"})

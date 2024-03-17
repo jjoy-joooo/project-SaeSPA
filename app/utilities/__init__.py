@@ -1,5 +1,6 @@
-from .common_parameters import convert_not_true_to_false
+from .common_parameters import get_boolean_summary_param, validate_file_upload
 
 __all__ = [
-    'convert_not_true_to_false',
+    'get_boolean_summary_param',
+    'validate_file_upload'
 ]

@@ -1,5 +1,16 @@
-def convert_not_true_to_false(param_summary):
-    if param_summary.lower() == 'true' or param_summary.lower() == True:
-        return True
-    else:
-        return False
+from flask import request, jsonify
+
+
+def get_boolean_summary_param():
+    return request.args.get("summary", default="false").lower() == "true"
+
+
+def validate_file_upload():
+    if "file" not in request.files:
+        return None, "No file part", 400
+
+    file = request.files["file"]
+    if file.filename == "":
+        return None, "No selected file", 400
+
+    return file, "File uploaded successfully", 200
