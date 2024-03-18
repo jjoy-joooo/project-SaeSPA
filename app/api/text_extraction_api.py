@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 
-from app.services import image_service, pdf_service
+from app.services import image_service, pdf_service, video_service, voice_service
 from app.utilities.common_parameters import (
     get_boolean_summary_param,
     validate_file_upload,
@@ -23,7 +23,6 @@ def process_api_test():
 
 @text_extraction_blueprint.route("/image", methods=["POST"])
 def process_image():
-
     file, message, statusCode = validate_file_upload()
     text = image_service(file).perform_extract_text()
 
@@ -56,15 +55,31 @@ def process_pdf():
     )
 
 
-@text_extraction_blueprint.route("/audio", methods=["POST"])
+@text_extraction_blueprint.route("/voice", methods=["POST"])
 def process_audio():
-    summary_param = get_boolean_summary_param()
+    file, message, statusCode = validate_file_upload()
+    text = voice_service(file).perform_extract_text()
 
-    return jsonify({"message": "Auio processed successfully"})
+    return jsonify(
+        {
+            "file": file.filename,
+            "message": message,
+            "statusCode": statusCode,
+            "text": text,
+        }
+    )
 
 
 @text_extraction_blueprint.route("/video", methods=["POST"])
 def process_video():
-    summary_param = get_boolean_summary_param()
+    file, message, statusCode = validate_file_upload()
+    text = video_service(file).perform_extract_text()
 
-    return jsonify({"message": "Video processed successfully"})
+    return jsonify(
+        {
+            "file": file.filename,
+            "message": message,
+            "statusCode": statusCode,
+            "text": text,
+        }
+    )

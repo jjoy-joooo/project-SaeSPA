@@ -1,6 +1,7 @@
 Flask
 gunicorn
 flask-cors
-PyPDF2
-google-cloud-vision
 python-dotenv
+google-cloud-vision
+PyPDF2
+SpeechRecognition
