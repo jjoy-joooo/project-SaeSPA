@@ -15,7 +15,7 @@ class pdf_service:
         return page_text
 
     # 비즈니스 로직
-    def perform_extract_text_from_pdf(self):
+    def perform_extract_text(self):
         reader = PdfReader(self.file)
         length_page = len(reader.pages)
         is_summary = get_boolean_summary_param()

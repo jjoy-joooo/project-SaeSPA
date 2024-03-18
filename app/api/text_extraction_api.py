@@ -1,20 +1,16 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, jsonify
 
+from app.services import image_service, pdf_service
 from app.utilities.common_parameters import (
     get_boolean_summary_param,
     validate_file_upload,
-)
-
-from app.services import (
-    pdf_service
-    # perform_extract_text_from_pdf
 )
 
 text_extraction_blueprint = Blueprint("text_extraction", __name__)
 
 
 @text_extraction_blueprint.route("/image", methods=["GET"])
-def process_image_get():
+def process_api_test():
     summary_param = get_boolean_summary_param()
 
     return jsonify(
@@ -25,15 +21,14 @@ def process_image_get():
     )
 
 
-
 @text_extraction_blueprint.route("/image", methods=["POST"])
 def process_image():
-    summary_param = get_boolean_summary_param()
-    file, message, statusCode = validate_file_upload()
-    text = pdf_service(file).perform_extract_text_from_pdf()
 
-    print('------------------------------------ ')
-    print('Test >>> ', text)
+    file, message, statusCode = validate_file_upload()
+    text = image_service(file).perform_extract_text()
+
+    # 제거 예정
+    summary_param = get_boolean_summary_param()
 
     return jsonify(
         {
@@ -41,19 +36,27 @@ def process_image():
             "file": file.filename,
             "message": message,
             "statusCode": statusCode,
-            "text": text
+            "text": text,
         }
     )
 
 
 @text_extraction_blueprint.route("/pdf", methods=["POST"])
 def process_pdf():
-    summary_param = get_boolean_summary_param()
+    file, message, statusCode = validate_file_upload()
+    text = pdf_service(file).perform_extract_text()
 
-    return jsonify({"message": "Pdf processed successfully"})
+    return jsonify(
+        {
+            "file": file.filename,
+            "message": message,
+            "statusCode": statusCode,
+            "text": text,
+        }
+    )
 
 
-@text_extraction_blueprint.route("/auio", methods=["POST"])
+@text_extraction_blueprint.route("/audio", methods=["POST"])
 def process_audio():
     summary_param = get_boolean_summary_param()
 
