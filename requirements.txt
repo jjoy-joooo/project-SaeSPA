@@ -1,0 +1,7 @@
+Flask
+gunicorn
+flask-cors
+python-dotenv
+google-cloud-vision
+PyPDF2
+SpeechRecognition
