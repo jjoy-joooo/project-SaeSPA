@@ -41,4 +41,4 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/backend
             docker rm -f container-backend
-            docker run -d -p 5000:5000 --name container-backend ${{ secrets.DOCKER_USERNAME }}/backend
+            docker run -d --network saespa -p 5000:5000 --name container-backend ${{ secrets.DOCKER_USERNAME }}/backend
