@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, Flask, jsonify
 
 from app.services import image_service, pdf_service, video_service, voice_service
 from app.utilities.common_parameters import (

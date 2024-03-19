@@ -16,7 +16,7 @@ class voice_service:
 
         try:
             text = recognizer.recognize_google(audio_data, language="ko-KR")
-            return text[0], None, 200
+            return text, None, 200
         except sr.UnknownValueError:
             message = "음성을 인식하지 못했습니다."
         except sr.RequestError as e:
