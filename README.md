@@ -87,18 +87,6 @@
     ├─picture
     ├─video
     │  ├─ffmpeg
-    │  │  ├─bin
-    │  │  ├─doc
-    │  │  ├─include
-    │  │  │  ├─libavcodec
-    │  │  │  ├─libavdevice
-    │  │  │  ├─libavfilter
-    │  │  │  ├─libavformat
-    │  │  │  ├─libavutil
-    │  │  │  ├─libswresample
-    │  │  │  └─libswscale
-    │  │  └─lib
-    │  │      └─pkgconfig
     │  └─videos
     └─voice
 ```
